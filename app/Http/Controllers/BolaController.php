@@ -40,51 +40,51 @@ class BolaController extends Controller
      */
     public function store(Request $request)
     {
-        $rules = [
-            'name' => 'required',
-            'description' => 'required',
-            'image' => 'required'
-        ];
+        // $rules = [
+        //     'name' => 'required',
+        //     'description' => 'required',
+        //     'image' => 'required'
+        // ];
 
-        $validator = Validator::make($request->all(), $rules);
-        if($validator->fails()){
-            return response() -> json(array(
-                'message' => 'check your request again. desc must be 10 char or more and form must be filled', 'status' => false), 400);
-        }else{
-            $image = $request->file('image');
-            $extension = $image->getClientOriginalExtension();
-            Storage::disk('public')->put($image->getFilename().'.'.$extension,  File::get($image));
-            $bola = new Bola();
-            $bola->name = $request->name;
-            $bola->description = $request->description;
-            $bola->image = "uploads/".$image->getFilename().'.'.$extension;
-            $bola->save();
+        // $validator = Validator::make($request->all(), $rules);
+        // if($validator->fails()){
+        //     return response() -> json(array(
+        //         'message' => 'check your request again. desc must be 10 char or more and form must be filled', 'status' => false), 400);
+        // }else{
+        //     $image = $request->file('image');
+        //     $extension = $image->getClientOriginalExtension();
+        //     Storage::disk('public')->put($image->getFilename().'.'.$extension,  File::get($image));
+        //     $bola = new Bola();
+        //     $bola->name = $request->name;
+        //     $bola->description = $request->description;
+        //     $bola->image = "uploads/".$image->getFilename().'.'.$extension;
+        //     $bola->save();
 
-            return response()->json(
-                Response::transform(
-                    $bola, 'successfully created', true
-                ), 201);
-        }
+        //     return response()->json(
+        //         Response::transform(
+        //             $bola, 'successfully created', true
+        //         ), 201);
+        // }
 
-        // $this->validate($request , [
-        // 'name' => 'required',
-        // 'description' => 'required',
-        // 'image' => 'required'
-        // ]);
+        $this->validate($request , [
+        'name' => 'required',
+        'description' => 'required',
+        'image' => 'required'
+        ]);
 
-        // $image= $request->file('image')->store('bola');
+        $image= $request->file('image')->store('bola');
 
-        // $bola = Bola::create([
-        // 'name' => $request->name,
-        // 'description' => $request->description,
-        // 'image' => $image
-        // ]);
+        $bola = Bola::create([
+        'name' => $request->name,
+        'description' => $request->description,
+        'image' => $image
+        ]);
 
-        // return response()->json([
-        // 'message' => 'berhasil',
-        // 'status' => 1,
-        // 'data' => $bola
-        // ], 201);
+        return response()->json([
+        'message' => 'berhasil',
+        'status' => 1,
+        'data' => $bola
+        ], 201);
     }
 
     /**
