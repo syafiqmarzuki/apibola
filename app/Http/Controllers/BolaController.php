@@ -19,7 +19,8 @@ class BolaController extends Controller
      */
     public function index()
     {
-        return response() -> json(Response::transform(Bola::get(), "ok" , true), 200);
+
+        return response() -> json(Response::transform(Bola::get(), "ok" , 1), 200);
     }
 
     /**
@@ -136,19 +137,19 @@ class BolaController extends Controller
     {
         $bola = Bola::find($id);
         if(is_null($bola)){
-            return response() -> json(array('message'=>'cannot delete because record not found', 'status'=>false),200);
+            return response() -> json(array('message'=>'cannot delete because record not found', 'status'=>0),200);
         }
         Bola::destroy($id);
-        return response() -> json(array('message'=>'succesfully deleted', 'status' => false), 200);
+        return response() -> json(array('message'=>'succesfully deleted', 'status' => 1), 200);
     }
 
     public function search(Request $request){
         $query = $request->search;
         $bola = Bola::where('name','LIKE','%'.$query.'%')->get();
         if(sizeof($bola) > 0){
-            return response() -> json(Response::transform($bola,"Has found", true), 200);
+            return response() -> json(Response::transform($bola,"Has found", 1), 200);
         }else{
-            return response() -> json(array('message'=>'No record found', 'status' => false), 200);
+            return response() -> json(array('message'=>'No record found', 'status' => 0), 200);
         }
     }
 }
