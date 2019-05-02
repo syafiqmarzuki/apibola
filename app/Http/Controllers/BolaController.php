@@ -99,9 +99,9 @@ class BolaController extends Controller
         $bola = Bola::find($id);
         if (is_null($bola)) {
             return response()->json(array('message'=>'
-                record not found', 'status'=>false),201);
+                record not found', 'status'=>0),201);
         }
-        return response() -> json(Response::transform($bola,"found", true), 200);
+        return response() -> json(Response::transform($bola,"found", 1), 200);
     }
 
     /**
